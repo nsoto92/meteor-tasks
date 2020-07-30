@@ -1,19 +1,21 @@
 import React from 'react';
+import { useTracker } from 'meteor/react-meteor-data';  // hook used to render tasks
 import { Task } from './Task'
+import Tasks from '../api/tasks'
+import { TaskForm } from './TaskForm'
 
-// Created Sample Data
-const tasks = [
-  { _id: 1, text: 'First Task' },
-  { _id: 2, text: 'Second Task' },
-  { _id: 3, text: 'Third Task' },
-];
+export const App = () => {
+  const tasks = useTracker(() => Tasks.find({}).fetch());  //
 
-export const App = () => (
-  <div>
-    <h1>Welcome to Meteor!</h1>
-    {/* Renders list items from Task.jsx */}
-    <ul>
-      {tasks.map(task => <Task key={task._id} task={task} />)}
-    </ul>
-  </div>
-);
+  return (
+    <div>
+      <h1>Welcome to Meteor!</h1>
+      {/* Renders list items*/}
+      <ul>
+        {tasks.map(task => <Task key={task._id} task={task} />)}
+      </ul>
+
+      <TaskForm />
+    </div>
+  )
+}
