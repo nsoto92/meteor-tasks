@@ -24,11 +24,14 @@ export const App = () => {
     _.set(filter, 'checked', false);
   }
 
-  const tasks = useTracker(() => Tasks.find(filter, { sort: { createdAt: -1 } }).fetch());  //Shows newest tasks first and filters them
+  const { tasks, incompleteTasksCount } = useTracker(() => ({                       //Filters task by newest first, hides completed, keeps count.
+    tasks: Tasks.find(filter, { sort: { createdAt: -1 } }).fetch(),
+    incompleteTasksCount: Tasks.find({ checked: { $ne: true } }).count()
+  }));
 
   return (
     <div className="simple-todos-react">
-      <h1>Norbert's Task List</h1>
+      <h1>Norbert's Task List  ({incompleteTasksCount})</h1>
       {/* FIltering Checkbox */}
       <div className="filters">
         <label>

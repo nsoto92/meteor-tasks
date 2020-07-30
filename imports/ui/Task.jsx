@@ -16,7 +16,6 @@ export const Task = ({ task, onCheckboxClick, onDeleteClick }) => {
                 onClick={() => onCheckboxClick(task)}
                 readOnly
             />
-
         </li>
     );
 };
