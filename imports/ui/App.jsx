@@ -18,10 +18,10 @@ export const App = () => {
   const tasks = useTracker(() => Tasks.find({}, { sort: { createdAt: -1 } }).fetch());  //Shows newest tasks first
 
   return (
-    <div>
+    <div className="simple-todos-react">
       <h1>Norbert's Task List</h1>
       {/* Renders list items*/}
-      <ul>
+      <ul className="tasks">
         {tasks.map(task => <Task
           key={task._id}
           task={task}
