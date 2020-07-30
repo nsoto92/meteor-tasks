@@ -4,6 +4,7 @@ import _ from 'lodash'
 import { Task } from './Task'
 import Tasks from '../api/tasks'
 import { TaskForm } from './TaskForm'
+import { LoginForm } from './LoginForm'
 
 const toggleChecked = ({ _id, isChecked }) => {  //Toggle checkbox
   Tasks.update(_id, {
@@ -24,10 +25,19 @@ export const App = () => {
     _.set(filter, 'checked', false);
   }
 
-  const { tasks, incompleteTasksCount } = useTracker(() => ({                       //Filters task by newest first, hides completed, keeps count.
+  const { tasks, incompleteTasksCount, user } = useTracker(() => ({                       //Filters task by newest first, hides completed, keeps count.
     tasks: Tasks.find(filter, { sort: { createdAt: -1 } }).fetch(),
-    incompleteTasksCount: Tasks.find({ checked: { $ne: true } }).count()
+    incompleteTasksCount: Tasks.find({ checked: { $ne: true } }).count(),
+    user: Meteor.user(),
   }));
+
+  if (!user) {                    //Only allow access to authenticated user.
+    return (
+      <div className="simple-todos-react">
+        <LoginForm />
+      </div>
+    );
+  }
 
   return (
     <div className="simple-todos-react">
@@ -54,7 +64,7 @@ export const App = () => {
         />)}
       </ul>
 
-      <TaskForm />
+      <TaskForm user={user} />
     </div>
   )
 }

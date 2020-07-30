@@ -7,6 +7,13 @@ function insertTask({ title }) {
 }
 
 Meteor.startup(() => {
+  if (!Accounts.findUserByUsername('meteorite')) {  //Create default user & password
+    Accounts.createUser({
+      username: 'meteorite',
+      password: 'password'
+    });
+  }
+
   if (Tasks.find().count() === 0) {
     [
       'First Task',
